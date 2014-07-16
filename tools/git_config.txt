@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "github"]
+	fetch = +refs/heads/*:refs/remotes/github/*
+	url = git@github.com:contentbird/pictie-srv.git
+[remote "pictie"]
+	url = git@heroku:pictie.git
+	fetch = +refs/heads/*:refs/remotes/pictie/*
+[branch "master"]
+	remote = github
+	merge = refs/heads/master
+[branch "sprint"]
+	remote = github
+	merge = refs/heads/sprint

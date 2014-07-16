@@ -1,0 +1,22 @@
+{
+  "name": "pictie-srv",
+  "version": "0.0.1",
+  "dependencies": {
+    "faye": "1.0.x",
+    "faye-redis": "",
+    "validator": "2.0.x",
+    "redis": ""
+  },
+  "devDependencies": {
+    "should": "",
+    "sinon": "",
+    "request": "",
+    "mocha": "",
+    "coffee-script": "",
+    "fakeredis": ""
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.3.x"
+  }
+}
