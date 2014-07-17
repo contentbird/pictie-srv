@@ -16,11 +16,11 @@ class @Server extends EventEmitter
   constructor: () ->
 
   #Start HTTP Server async on localhost
-  startHTTP: (http_port, callback) ->
+  startHTTP: (http_port, callback) =>
     port = _config.port(http_port)
 
     # Handle non-Bayeux requests
-    requestHandler = (request, response) ->
+    requestHandler = (request, response) =>
       uri = url.parse(request.url).pathname
       if uri == '/'
         response.writeHead(200, {'Content-Type': 'text/html'})
@@ -34,9 +34,11 @@ class @Server extends EventEmitter
             body += data
             if body.length > 1e6
               request.connection.destroy()
-          request.on 'end', ->
+          request.on 'end', =>
             post = JSON.parse(body)
-            #write in the room
+
+            @bayeux.getClient().publish "/user/#{post.recipient}", { evt: 'message', message:   {sender: post.sender, recipient: post.recipient, body: post.body}}
+
             json = JSON.stringify({message: {sender: post.sender, recipient: post.recipient, body: post.body}})
             response.writeHead(200, {'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"})
             response.end(json)
