@@ -1,4 +1,4 @@
-_server = require '../lib/server.js'
+_server = require './server'
 
 exports.start = (http_port) ->
   server = new _server.Server
