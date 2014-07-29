@@ -2,9 +2,7 @@ _server = require './server'
 
 exports.start = (http_port) ->
   server = new _server.Server
-  server.startHTTP http_port, ->
-    server.attachFaye('memory')
-    server.initApp()
+  server.start http_port, ->
     # server.sanitizeIncomingMessages()
     # server.authenticateOnMetaSubscriptions()
     # server.maintainUserList()

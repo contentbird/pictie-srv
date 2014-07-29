@@ -10,13 +10,15 @@ _redis_users  = require './redis_users_manager',
 class @Server
   constructor: () ->
 
-  startHTTP: (http_port, callback) =>
-    port = _config.port(http_port)
-    @app = new _app.ExpressApp
+  start: (http_port, cb) =>
+    @app        = new _app.ExpressApp
     @httpServer = http.createServer @app.app
-    @httpServer.listen Number(port), ->
-      # console.log "HTTP server started on port #{Number(port)}"
-      callback()
+
+    this.attachFaye()
+    this.initApp()
+
+    @httpServer.listen Number(_config.port(http_port)), ->
+      cb()
 
   attachFaye: (engine, db=null) ->
     if engine == 'redis'
