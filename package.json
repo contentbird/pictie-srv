@@ -5,7 +5,10 @@
     "faye": "1.0.x",
     "faye-redis": "",
     "validator": "2.0.x",
-    "redis": ""
+    "redis": "",
+    "express": "4.7.x",
+    "morgan": "",
+    "body-parser": ""
   },
   "devDependencies": {
     "should": "",
