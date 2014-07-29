@@ -16,9 +16,17 @@ class @ExpressApp
     @app.get '/', (req, res) ->
       res.send 'Pictie socket server is on /bayeux ; faye client is on bayeux/client.js'
 
+    @app.all '/messages', (req, res, next) ->
+      res.header("Access-Control-Allow-Origin", "*")
+      res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+      next()
+
+    @app.options '/messages', (req, res) ->
+      res.end()
+
     @app.post '/messages', (req, res) ->
       message = {sender: req.body.sender, recipient: req.body.recipient, body: req.body.body}
-      bayeux.getClient().publish '/user/#{req.body.recipient}', { evt: 'message', message: message }
+      bayeux.getClient().publish "/user/#{req.body.recipient}", { evt: 'message', message: message }
       res.json(message)
 
     @app.use (req, res, next) ->
