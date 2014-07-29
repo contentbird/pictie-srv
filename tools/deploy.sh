@@ -6,7 +6,7 @@ currentBranch() {
 
 safeMatchingEnvForBranch() {
   case $1 in
-    "dev") env="pictie";;
+    "dev") env="pictie-dev";;
     "master") env="pictie";;
     *) echo "no matching env for $1"
        exit ;;
@@ -15,8 +15,8 @@ safeMatchingEnvForBranch() {
 }
 
 case $1 in
-  # "pictie-dev") branch="dev"
-  #               heroku_app="$1";;
+  "pictie-dev") branch="dev"
+                heroku_app="$1";;
   "pictie")     branch="master"
                 heroku_app="$1";;
   "") branch=$(currentBranch)
