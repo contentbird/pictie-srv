@@ -4,7 +4,7 @@
 A messaging server in node.js using [FAYE](https://github.com/jcoglan/faye)
 
 ## Installation
-* Get the code : `git clone https://github.com/railsagile/quintonic-chat.git`
+* Get the code : `git clone https://github.com/contentbird/pictie-srv.git`
 * Install Node.js & Npm: Mac OS X users get .pkg from [here](http://nodejs.org/dist/latest/), Linux users use this [link](http://gist.github.com/579814)
 * Download & install node dependencies : `npm install`
 * Install foreman : `gem install foreman`
