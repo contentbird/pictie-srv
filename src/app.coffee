@@ -8,13 +8,16 @@ class @ExpressApp
   constructor: () ->
     @app = express()
 
-  init:(bayeux) ->
+  init:(bayeux, users_manager) ->
     @app.use morgan()
     @app.use bodyParser()
     @app.use express.static(__dirname + '/public')
 
     @app.get '/', (req, res) ->
       res.send 'Pictie socket server is on /bayeux ; faye client is on bayeux/client.js'
+
+    @app.get '/users', (req, res) ->
+      res.json(users_manager.allUsers())
 
     @app.all '/messages', (req, res, next) ->
       res.header("Access-Control-Allow-Origin", "*")

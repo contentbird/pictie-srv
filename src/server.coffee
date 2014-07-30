@@ -15,6 +15,7 @@ class @Server
     @httpServer = http.createServer @app.app
 
     this.attachFaye()
+    this.maintainUserList()
     this.initApp()
 
     @httpServer.listen Number(_config.port(http_port)), ->
@@ -33,4 +34,26 @@ class @Server
     @bayeux.attach @httpServer
 
   initApp: () ->
-    @app.init(@bayeux)
+    @app.init(@bayeux, @users_manager)
+
+    #Keep a UserList up to date with Save User Info sent from client into users_list
+  maintainUserList: ->
+    @bayeux.addExtension {
+      incoming: (message, callback) =>
+        if message.channel == '/meta/subscribe'
+          console.log("subscription coming: #{JSON.stringify(message)}");
+          @users_manager.subscribeUser message, () ->
+            console.log("client #{clientId} subscribed to /meta/subscribe")
+            callback
+        else
+          # Let non-subscribe messages through
+          callback(message)
+    }
+
+    @bayeux.bind 'disconnect', (clientId) =>
+      console.log("disconnected client #{clientId}")
+      @users_manager.unsubscribeUser clientId, () ->
+        console.log("client #{clientId} unsubscribed")
+
+  stop: ->
+    @httpServer.close()
