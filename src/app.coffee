@@ -32,6 +32,11 @@ class @ExpressApp
       bayeux.getClient().publish "/user/#{req.body.recipient}", { evt: 'message', message: message }
       res.json(message)
 
+    @app.post '/push_registration', (req, res) ->
+      console.log("received post on /push_registration #{JSON.stringify(req.body)}")
+      users_manager.storePushInfo(req.body.userId, req.body.pushProvider, req.body.pushToken)
+      res.json({'result': 'success'})
+
     @app.use (req, res, next) ->
       res.send 404, 'Sorry cant find that!'
 
