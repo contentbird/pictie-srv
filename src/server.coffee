@@ -4,7 +4,8 @@ http          = require 'http',
 faye          = require 'faye',
 _app          = require './app',
 _memory_users = require './memory_users_manager',
-_redis_users  = require './redis_users_manager'
+_redis_users  = require './redis_users_manager',
+_push         = require './push_service'
 
 class @Server
   constructor: (config) ->
@@ -14,6 +15,7 @@ class @Server
 
     this.attachFaye()
     this.maintainUserList()
+    this.initPushService()
     this.initApp()
 
   start: (http_port, cb) =>
@@ -32,8 +34,11 @@ class @Server
       @users_manager  = new _memory_users.MemoryUsersManager
     @bayeux.attach @httpServer
 
+  initPushService: () ->
+    @push = new _push.PushService(@users_manager)
+
   initApp: () ->
-    @app.init(@bayeux, @users_manager)
+    @app.init(@bayeux, @users_manager, @push)
 
     #Keep a UserList up to date with Save User Info sent from client into users_list
   maintainUserList: ->
