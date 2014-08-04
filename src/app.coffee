@@ -68,8 +68,7 @@ class @ExpressApp
       console.log("sending to token #{token}")
       options = {
         cert:          process.env.APN_CERT_PEM || "certs/apn_cert.pem", #as local .env does not support multilines env vars
-        key:           process.env.APN_KEY_PEM  || "certs/apn_key.pem",  #as local .env does not support multilines env vars
-        passphrase:    process.env.APN_KEY_PASS,
+        key:           process.env.APN_KEY_PEM  || "certs/apn_key.pem"   #as local .env does not support multilines env vars
         errorCallback: errorCB
       }
       apnConnection = new apn.Connection(options)
