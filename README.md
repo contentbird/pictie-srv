@@ -1,21 +1,40 @@
 # Pictie Server
 
-## Description
-A messaging server in node.js using [FAYE](https://github.com/jcoglan/faye)
+A messaging server in node.js using [FAYE](https://github.com/jcoglan/faye) and [Express](http://expressjs.com/)
 
-## Installation
-* Get the code : `git clone https://github.com/contentbird/pictie-srv.git`
+### Contents
+- [Installation](#install)
+- [Configuration](#config)
+- [Dev & Test](#devtest)
+
+##<a name="install"></a> Installation
+* Get the code : `git clone https://github.com/railsagile/quintonic-chat.git`
 * Install Node.js & Npm: Mac OS X users get .pkg from [here](http://nodejs.org/dist/latest/), Linux users use this [link](http://gist.github.com/579814)
 * Download & install node dependencies : `npm install`
 * Install foreman : `gem install foreman`
-
-## Run example on local server
-* Run the server in one terminal
+* Run on local server
 ``` shell
 foreman start
 ```
 
-## Dev & test
+##<a name="config"></a> Configuration
+
+### Configure APNS (Apple Push Notification Service)
+
+In order to connect with Apple Servers, the server must have access to the certificates
+
+* Retrieve __pictie_aps_<development|production>.p12__ and __pictie_aps_<development|production>.cer__ files from vault
+* Follow instructions [here](https://github.com/argon/node-apn/wiki/Preparing-Certificates) to generate __apn_cert_<env>.pem__ and __apn_key_<env>.pem__
+ - For __local__ server, put these 2 files in /certs directory
+ - For __production__ server you must set two environment variables : APN_CERT_PEM & APN_KEY_PEM
+   In order to set those 2 multiline variables do the following:
+   ``` shell
+   thevar=$(cat ./certs/apn_key.pem)
+   heroku config:add APN_KEY_PEM="$thevar" -a pictie-dev
+   ```
+
+
+##<a name="devtest"></a> Dev & test
 * Run coffeescript
 ``` shell
 coffee -c -w -o lib/ src/
