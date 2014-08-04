@@ -1,14 +1,14 @@
 'use strict';
 
 http          = require 'http',
-faye          = require 'faye';
-_config       = require './config',
+faye          = require 'faye',
 _app          = require './app',
 _memory_users = require './memory_users_manager',
-_redis_users  = require './redis_users_manager',
+_redis_users  = require './redis_users_manager'
 
 class @Server
-  constructor: () ->
+  constructor: (config) ->
+    @config       = config
     @app          = new _app.ExpressApp
     @httpServer   = http.createServer @app.app
 
@@ -17,7 +17,7 @@ class @Server
     this.initApp()
 
   start: (http_port, cb) =>
-    @httpServer.listen Number(_config.port(http_port)), ->
+    @httpServer.listen Number(@config.port(http_port)), ->
       cb()
 
   attachFaye: (engine, db=null) ->

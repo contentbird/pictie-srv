@@ -1,10 +1,8 @@
+_config = require './config',
 _server = require './server'
-_env    = require 'node-env-file'
-
-_env '.env'
 
 exports.start = (http_port) ->
-  server = new _server.Server
+  server = new _server.Server(_config)
   server.start http_port, ->
     # server.sanitizeIncomingMessages()
     # server.authenticateOnMetaSubscriptions()
