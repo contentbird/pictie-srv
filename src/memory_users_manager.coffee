@@ -25,6 +25,11 @@ class @MemoryUsersManager
     @users_list['/meta/subscribe'][userId]['pushs'] = {}                  if !@users_list['/meta/subscribe'][userId]['pushs']?
     @users_list['/meta/subscribe'][userId]['pushs'][pushProvider] = pushToken
 
+  retrievePushInfo: (userId) ->
+    console.log("MemoryUsersManager - Retrieving pushInfo for user #{userId}")
+    console.log(@users_list['/meta/subscribe'][userId]['pushs'])
+    @users_list['/meta/subscribe'][userId]['pushs'] if @users_list['/meta/subscribe'][userId]?
+
   # addUserToChannel: (clientId, channel) ->
   #   @users_list[channel]                      = {} unless @users_list[channel]?
   #   @users_list[channel][clientId+'']         = @users_list['/meta/subscribe'][clientId+'']

@@ -8,7 +8,9 @@
     "redis": "",
     "express": "4.7.x",
     "morgan": "",
-    "body-parser": ""
+    "body-parser": "",
+    "node-env-file": "",
+    "apn": ""
   },
   "devDependencies": {
     "should": "",

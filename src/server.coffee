@@ -9,15 +9,14 @@ _redis_users  = require './redis_users_manager',
 
 class @Server
   constructor: () ->
-
-  start: (http_port, cb) =>
-    @app        = new _app.ExpressApp
-    @httpServer = http.createServer @app.app
+    @app          = new _app.ExpressApp
+    @httpServer   = http.createServer @app.app
 
     this.attachFaye()
     this.maintainUserList()
     this.initApp()
 
+  start: (http_port, cb) =>
     @httpServer.listen Number(_config.port(http_port)), ->
       cb()
 
