@@ -29,7 +29,8 @@ class @ExpressApp
 
     @app.post '/messages', (req, res) ->
       message = {sender: req.body.sender, recipient: req.body.recipient, body: req.body.body}
-      bayeux.getClient().publish "/user/#{req.body.recipient}", { evt: 'message', message: message }
+      bayeux.getClient().publish "/user/#{message.recipient}", { evt: 'message', message: message }
+      pushService.sendNotification(message.recipient, message) unless usersManager.hasUserSubscribedClients(message.recipient)
       res.json(message)
 
     @app.post '/push_registration', (req, res) ->

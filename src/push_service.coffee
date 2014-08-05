@@ -53,7 +53,7 @@ class @PushService
       note.expiry   = Math.floor(Date.now() / 1000) + 3600 # Expires 1 hour from now.
       note.badge    = 1
       note.sound    = "ping.aiff"
-      note.alert    = "You have a new Pictie"
+      note.alert    = "You have a new Pictie from #{message.sender}"
       note.payload  = {'messageFrom': message.sender, 'messageBody': message.body}
 
       @apnConnection.pushNotification note, device

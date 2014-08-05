@@ -46,9 +46,7 @@ class @Server
       incoming: (message, callback) =>
         if message.channel == '/meta/subscribe'
           console.log("subscription coming: #{JSON.stringify(message)}");
-          @users_manager.subscribeUser message, () ->
-            console.log("client #{clientId} subscribed to /meta/subscribe")
-            callback
+          @users_manager.subscribeUser message, callback
         else
           # Let non-subscribe messages through
           callback(message)
