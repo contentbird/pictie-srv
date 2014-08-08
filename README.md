@@ -32,6 +32,11 @@ In order to connect with Apple Servers, the server must have access to the certi
    thevar=$(cat ./certs/apn_key.pem)
    heroku config:add APN_KEY_PEM="$thevar" -a pictie-dev
    ```
+### Configure GCM (Google Cloud Messaging)
+
+In order to connect with Google Servers, you need to:
+
+* Set the GCM_API_KEY environment variable with your Google API Key
 
 
 ##<a name="devtest"></a> Dev & test
