@@ -10,7 +10,8 @@
     "morgan": "",
     "body-parser": "",
     "node-env-file": "",
-    "apn": ""
+    "apn": "",
+    "node-gcm": ""
   },
   "devDependencies": {
     "should": "",

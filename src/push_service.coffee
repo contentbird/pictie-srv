@@ -1,15 +1,18 @@
 apn = require 'apn'
+gcm = require 'node-gcm'
 
 class @PushService
   constructor: (usersManager) ->
-    options = {
-        cert:          process.env.APN_CERT_PEM || "certs/apn_cert.pem", #as local .env does not support multilines env vars
-        key:           process.env.APN_KEY_PEM  || "certs/apn_key.pem"   #as local .env does not support multilines env vars
-        errorCallback: errorCB
-      }
     @usersManager = usersManager
 
-    @apnConnection = new apn.Connection(options)
+    apnOptions = {
+      cert:          process.env.APN_CERT_PEM || "certs/apn_cert.pem", #as local .env does not support multilines env vars
+      key:           process.env.APN_KEY_PEM  || "certs/apn_key.pem"   #as local .env does not support multilines env vars
+      errorCallback: errorCB
+    }
+
+    @apnConnection = new apn.Connection(apnOptions)
+    @gcmSender     = new gcm.Sender(process.env.GCM_API_KEY)
 
     errorCB = (err, notification) ->
       console.log(err + ' :: ' + notification)
@@ -41,21 +44,30 @@ class @PushService
 
   sendNotification: (userId, message) ->
     pushInfo = @usersManager.retrievePushInfo(userId)
-    console.log("pushInfo for userId #{userId}" + JSON.stringify(pushInfo))
+
+    notifTitle   = "You have a new Pictie from #{message.sender}"
+    messageCount = 1
+    extraParams  = { 'messageFrom': message.sender, 'messageBody': message.body }
 
     if pushInfo['APNS']?
-      token   = pushInfo['APNS']
-      console.log("sending to token #{token}")
+      token         = pushInfo['APNS']
 
       device        = new apn.Device(token)
-      console.log("device is #{JSON.stringify(device)}")
       note          = new apn.Notification()
       note.expiry   = Math.floor(Date.now() / 1000) + 3600 # Expires 1 hour from now.
-      note.badge    = 1
+      note.badge    = messageCount
       note.sound    = "ping.aiff"
-      note.alert    = "You have a new Pictie from #{message.sender}"
-      note.payload  = {'messageFrom': message.sender, 'messageBody': message.body}
+      note.alert    = notifTitle
+      note.payload  = extraParams
 
       @apnConnection.pushNotification note, device
     else
-      res.send "Only APNS notification supported"
+      token                 = pushInfo['GCM']
+      extraParams.msgcnt    = messageCount
+      extraParams.soundname = "beep.wav"
+      extraParams.message   = notifTitle
+      message = new gcm.Message({ data: extraParams })
+      nbRetries = 3
+
+      @gcmSender.send message, [token], nbRetries, (err, result) ->
+        console.log(result);
